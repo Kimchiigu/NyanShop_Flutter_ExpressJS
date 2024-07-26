@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "3fa75500-8aa9-4526-96ba-869b95d91210",
+		"name": "Nyanshop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33938620"
+	},
+	"item": [
+		{
+			"name": "get-all-users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user-by-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get/1",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"Lily\",\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/register",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/login",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-user-by-id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"Jason\",\r\n  \"email\": \"jason@gmail.com\",\r\n  \"password\": \"jason1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/update/2",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"update",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-user-by-id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/delete/2",
+					"protocol": "http",
+					"host": [
+						"{{BASE_API_URL}}"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"users",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

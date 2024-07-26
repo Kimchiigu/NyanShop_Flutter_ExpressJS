@@ -1,99 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:mcc_frontend/home.dart';
-import 'package:mcc_frontend/register.dart';
+import 'package:mcc_frontend/login.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  String? usernameError;
   String? emailError;
   String? passwordError;
 
-  Future<void> handleLogin() async {
+  Future<void> handleRegister() async {
+    String username = usernameController.text;
     String email = emailController.text;
     String password = passwordController.text;
 
-    // Print email and password for debugging purposes
-    print("Email: $email");
-    print("Password: $password");
-
     bool hasError = false;
 
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-      setState(() {
-        emailError = "Please enter a valid email address";
-      });
+    if (username.length < 3) {
+      usernameError = "Username must be more than 3 characters";
       hasError = true;
     } else {
-      setState(() {
-        emailError = null;
-      });
+      usernameError = null;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      emailError = "Please enter a valid email address";
+      hasError = true;
+    } else {
+      emailError = null;
     }
 
     if (password.length < 6) {
-      setState(() {
-        passwordError = "Password must be at least 6 characters long";
-      });
+      passwordError = "Password must be at least 6 characters long";
       hasError = true;
     } else {
-      setState(() {
-        passwordError = null;
-      });
+      passwordError = null;
     }
 
     if (hasError) {
+      setState(() {}); // Trigger UI update to show error messages
       return;
     }
 
     try {
       var response = await http.post(
-        Uri.parse('http://127.0.0.1:3000/users/login'),
+        Uri.parse('http://127.0.0.1:3000/users/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
+          'username': username,
           'email': email,
           'password': password,
         }),
       );
 
       if (response.statusCode == 200) {
-        // Login successful, navigate to HomePage
-        var data = jsonDecode(response.body);
-        if (data['email'] != null) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(email: data['email']),
-            ),
-            (route) => false,
-          );
-        } else {
-          // Handle missing email in response
-          print("Email field is missing in the response");
-        }
+        // Registration success
+        print("Registration successful");
+        // You can navigate to the login page or show a success message
+        navigateToLogin();
       } else {
         // Handle error response
-        print("Login failed: ${response.body}");
-        // Optionally, you can display an error message to the user
+        print("Registration failed: ${response.body}");
       }
     } catch (e) {
       print("Error occurred: $e");
-      // Optionally, you can display an error message to the user
     }
   }
 
-  void navigateToRegister() {
+  void navigateToLogin() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const RegisterPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
@@ -101,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("NyanShop"),
+        title: const Text("Register"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -116,13 +103,21 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               const Text(
-                "Login Page",
+                "Register",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: "Username",
+                  errorText: usernameError,
+                ),
+              ),
+              const SizedBox(height: 10),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -142,14 +137,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: handleLogin,
-                child: const Text("Login"),
+                onPressed: handleRegister,
+                child: const Text("Register"),
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: navigateToRegister,
+                onTap: navigateToLogin,
                 child: const Text(
-                  "Don't have an account yet? Register here",
+                  "Already have an account? Login here",
                   style: TextStyle(color: Colors.blue),
                 ),
               ),
