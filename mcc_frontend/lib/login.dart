@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:mcc_frontend/home.dart';
 import 'package:mcc_frontend/layout.dart';
 import 'package:mcc_frontend/register.dart';
 
@@ -78,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   void navigateToRegister() {
     Navigator.push(
       context,
@@ -149,4 +147,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

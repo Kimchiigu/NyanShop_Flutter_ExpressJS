@@ -4,10 +4,9 @@ import 'dart:convert';
 import 'detail.dart';
 
 class ItemPage extends StatefulWidget {
-  final String userId; // Add userId as a parameter
+  final int userId; // Added userId
 
-  const ItemPage(
-      {super.key, required this.userId}); // Add userId to constructor
+  const ItemPage({super.key, required this.userId}); // Required userId
 
   @override
   _ItemPageState createState() => _ItemPageState();

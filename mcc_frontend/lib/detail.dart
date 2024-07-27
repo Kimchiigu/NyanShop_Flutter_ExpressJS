@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> item;
-  final String userId; // Add userId as a parameter
+  final int userId; // Add userId as a parameter
 
   const DetailPage(
       {super.key,

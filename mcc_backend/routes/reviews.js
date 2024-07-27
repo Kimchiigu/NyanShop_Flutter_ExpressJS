@@ -22,16 +22,26 @@ router.get("/get/:itemId", async (req, res) => {
 
 // Create a review
 router.post("/create", async (req, res) => {
-  const { itemId, review, userId } = req.body; // Add userId from request
+  const { itemId, review_text, userId } = req.body; // Note review_text
+
+  if (!itemId || !review_text || !userId) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   try {
     const query =
       "INSERT INTO reviews (item_id, user_id, review_text) VALUES (?, ?, ?)";
-    db.query(query, [itemId, userId, review], (error, results) => {
-      if (error)
-        return res.status(500).json({ error: "Failed to create review" });
+    db.query(query, [itemId, userId, review_text], (error, results) => {
+      if (error) {
+        console.error("Database Error: ", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to create review", details: error.message });
+      }
       res.status(201).json({ message: "Review created successfully" });
     });
   } catch (err) {
+    console.error("Server Error: ", err);
     res.status(500).json({ error: err.message });
   }
 });

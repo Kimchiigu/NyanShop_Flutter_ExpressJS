@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mcc_frontend/detail.dart';
+import 'package:mcc_frontend/main.dart';
 import 'home.dart';
 import 'item.dart';
 import 'profile.dart';
 
 class LayoutPage extends StatefulWidget {
   final int userId;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  const LayoutPage({super.key, required this.userId});
+  LayoutPage({super.key, required this.userId});
 
   @override
   State<LayoutPage> createState() => _LayoutPageState();
@@ -17,17 +18,20 @@ class _LayoutPageState extends State<LayoutPage> {
   int _selectedIndex = 0;
   bool isDarkMode = false;
 
-  final List<Widget> _pages = [];
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
-    _pages.add(HomePage(userId: widget.userId));
-    _pages.add(ItemPage(userId: '',));
-    _pages.add(ProfilePage(
-      userId: widget.userId,
-      username: '',
-    ));
+    _pages = [
+      HomePage(userId: widget.userId),
+      ItemPage(userId: widget.userId),
+      ProfilePage(
+        userId: widget.userId,
+        username: '',
+        navigatorKey: navigatorKey,
+      ),
+    ];
   }
 
   void _onItemTapped(int index) {
@@ -95,12 +99,12 @@ class _LayoutPageState extends State<LayoutPage> {
                 ];
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.logout),
+            //   onPressed: () {
+            //     Navigator.pushReplacementNamed(context, '/login');
+            //   },
+            // ),
           ],
         ),
         body: _pages[_selectedIndex],

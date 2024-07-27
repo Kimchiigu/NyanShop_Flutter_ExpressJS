@@ -4,8 +4,14 @@ import 'dart:convert';
 
 class ProfilePage extends StatelessWidget {
   final int userId;
+  final GlobalKey<NavigatorState> navigatorKey;
 
-  const ProfilePage({super.key, required this.userId, required String username});
+  const ProfilePage({
+    super.key,
+    required this.userId,
+    required String username,
+    required this.navigatorKey,
+  });
 
   Future<Map<String, dynamic>> fetchUserDetails() async {
     try {
@@ -53,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      navigatorKey.currentState?.pushReplacementNamed('/login');
                     },
                     child: const Text('Logout'),
                   ),
