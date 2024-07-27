@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mcc_frontend/home.dart';
+import 'package:mcc_frontend/layout.dart';
 import 'package:mcc_frontend/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,10 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> handleLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-
-    // Print email and password for debugging purposes
-    print("Email: $email");
-    print("Password: $password");
 
     bool hasError = false;
 
@@ -56,39 +53,31 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://127.0.0.1:3000/users/login'),
+        Uri.parse('http://10.0.2.2:3000/users/login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
-        // Login successful, navigate to HomePage
         var data = jsonDecode(response.body);
-        if (data['email'] != null) {
-          Navigator.pushAndRemoveUntil(
+        if (data['id'] != null) {
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(email: data['email']),
+              builder: (context) => LayoutPage(userId: data['id']),
             ),
-            (route) => false,
           );
         } else {
-          // Handle missing email in response
-          print("Email field is missing in the response");
+          print("User ID is missing in the response");
         }
       } else {
-        // Handle error response
         print("Login failed: ${response.body}");
-        // Optionally, you can display an error message to the user
       }
     } catch (e) {
       print("Error occurred: $e");
-      // Optionally, you can display an error message to the user
     }
   }
+
 
   void navigateToRegister() {
     Navigator.push(
@@ -110,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'nyanshop-logo.png',
+                'assets/nyanshop-logo.png',
                 height: 100,
                 width: 100,
               ),
@@ -160,3 +149,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

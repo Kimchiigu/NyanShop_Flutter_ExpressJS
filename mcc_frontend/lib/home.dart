@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
-  final String email;
+  final int userId;
 
-  const HomePage({super.key, required this.email});
+  const HomePage({super.key, required this.userId});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,18 +15,38 @@ class _HomePageState extends State<HomePage> {
   bool isDarkMode = false;
   late PageController _pageController;
   int _currentPage = 0;
+  String? username;
 
   @override
   void initState() {
     super.initState();
+    _fetchUsername();
     _pageController = PageController();
     _startAutoSlide();
   }
 
-  void _toggleTheme(String? value) {
-    setState(() {
-      isDarkMode = value == 'Dark';
-    });
+  void _fetchUsername() async {
+    try {
+      var response = await http.get(
+        Uri.parse('http://10.0.2.2:3000/users/get/${widget.userId}'),
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        print("Fetched data: $data");
+        setState(() {
+          if (data is List && data.isNotEmpty) {
+            username = data[0]['username'];
+          } else {
+            print("User data is empty or not in expected format");
+          }
+        });
+      } else {
+        print("Failed to fetch username: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+    }
   }
 
   void _startAutoSlide() {
@@ -49,77 +71,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData lightTheme = ThemeData(
-      brightness: Brightness.light,
-      primaryColor: Colors.blue,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Home"),
       ),
-      scaffoldBackgroundColor: Colors.white,
-      textTheme: const TextTheme(
-        headline5: TextStyle(color: Colors.black),
-        headline6: TextStyle(color: Colors.black),
-        bodyText2: TextStyle(color: Colors.black),
-      ),
-    );
-
-    final ThemeData darkTheme = ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: Colors.grey[900],
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.grey[850],
-        foregroundColor: Colors.white,
-      ),
-      scaffoldBackgroundColor: Colors.black,
-      textTheme: const TextTheme(
-        headline5: TextStyle(color: Colors.white),
-        headline6: TextStyle(color: Colors.white),
-        bodyText2: TextStyle(color: Colors.white70),
-      ),
-    );
-
-    return MaterialApp(
-      theme: isDarkMode ? darkTheme : lightTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("NyanShop"),
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: _toggleTheme,
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem(
-                    value: 'Light',
-                    child: Text('Light Mode'),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Dark',
-                    child: Text('Dark Mode'),
-                  ),
-                ];
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-            ),
-          ],
-        ),
-        body: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Greeting Message
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                // 'Hello ${widget.email}!',
-                'Hello',
+                'Hello ${username ?? 'Guest'}!',
                 style: Theme.of(context).textTheme.headline5,
               ),
             ),
-            // Image Carousel with Arrows
             SizedBox(
               height: 200,
               child: Stack(
@@ -127,9 +93,9 @@ class _HomePageState extends State<HomePage> {
                   PageView(
                     controller: _pageController,
                     children: [
-                      Image.asset('event-1.png', fit: BoxFit.cover),
-                      Image.asset('event-2.png', fit: BoxFit.cover),
-                      Image.asset('event-3.png', fit: BoxFit.cover),
+                      Image.asset('assets/event-1.png', fit: BoxFit.cover),
+                      Image.asset('assets/event-2.png', fit: BoxFit.cover),
+                      Image.asset('assets/event-3.png', fit: BoxFit.cover),
                     ],
                   ),
                   Positioned(
@@ -164,55 +130,22 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 20),
-            // Infographic
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'About NyanShop',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'NyanShop is a leading online store offering a wide range of products. Our mission is to provide the best shopping experience with high-quality products and exceptional customer service. Whether you are looking for the latest fashion trends, electronics, or home essentials, NyanShop has it all. Stay tuned for exciting promotions and updates!',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ],
+              child: Text(
+                "Welcome to NyanShop! At NyanShop, we're passionate about all things feline. We specialize in providing a curated selection of premium cat products and comprehensive cat maintenance solutions to ensure your furry friends are happy and healthy.",
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Image.asset(
+                'assets/nyanshop-infographic.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
               ),
             ),
           ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category),
-              label: 'Items',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: 0, // Update to reflect current selected index
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                Navigator.pushReplacementNamed(context, '/home');
-                break;
-              case 1:
-                Navigator.pushReplacementNamed(context, '/items');
-                break;
-              case 2:
-                Navigator.pushReplacementNamed(context, '/profile');
-                break;
-            }
-          },
         ),
       ),
     );

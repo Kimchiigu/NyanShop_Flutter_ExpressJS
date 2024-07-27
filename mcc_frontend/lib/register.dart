@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://127.0.0.1:3000/users/register'),
+        Uri.parse('http://10.0.2.2:3000/users/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'nyanshop-logo.png',
+                'assets/nyanshop-logo.png',
                 height: 100,
                 width: 100,
               ),

@@ -20,10 +20,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) =>
-            const HomePage(email: 'Guest'), // Update to actual username
-        '/items': (context) => ItemPage(),
-        '/profile': (context) =>
-            const ProfilePage(username: 'Guest'), // Update to actual username
+            const HomePage(userId: 1), // Update to actual username
+        '/items': (context) => const ItemPage(userId: '',),
+        '/profile': (context) => const ProfilePage(
+              username: 'Guest',
+              userId: 1,
+            ), // Update to actual username
       },
     );
   }

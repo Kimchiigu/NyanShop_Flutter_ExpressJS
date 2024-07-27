@@ -1,72 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfilePage extends StatelessWidget {
-  final String username;
+  final int userId;
 
-  const ProfilePage({super.key, required this.username});
+  const ProfilePage({super.key, required this.userId, required String username});
+
+  Future<Map<String, dynamic>> fetchUserDetails() async {
+    try {
+      var response = await http.get(
+        Uri.parse('http://10.0.2.2:3000/users/get/$userId'),
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data is List && data.isNotEmpty) {
+          return data[0]; // Return the first item in the list
+        } else {
+          throw Exception('User data is empty or not in expected format');
+        }
+      } else {
+        throw Exception('Failed to fetch user details');
+      }
+    } catch (e) {
+      throw Exception('Error occurred: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Dummy email for illustration; replace with actual email if available
-    final String email = "user@example.com";
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Username: $username',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Email: $email',
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-              child: const Text('Logout'),
-            ),
-          ],
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: fetchUserDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              var user = snapshot.data!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Username: ${user['username']}'),
+                  Text('Email: ${user['email']}'),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    },
+                    child: const Text('Logout'),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(child: Text('No user data found'));
+            }
+          },
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Items',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 2, // This should be the index of the current page
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacementNamed(context, '/home');
-              break;
-            case 1:
-              Navigator.pushReplacementNamed(context, '/items');
-              break;
-            case 2:
-              Navigator.pushReplacementNamed(context, '/profile');
-              break;
-          }
-        },
       ),
     );
   }

@@ -25,7 +25,7 @@ var doRegister = (username, email, password) => {
 var doLogin = (email, password) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "select email, username, password from users where email = ?",
+      "select id, email, username, password from users where email = ?",
       [email],
       (error, result) => {
         if (!!error) return reject(error);
@@ -45,6 +45,7 @@ var doLogin = (email, password) => {
             );
 
             return resolve({
+              id: result[0].id,
               email: result[0].email,
               username: result[0].username,
               token: token,

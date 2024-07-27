@@ -1,35 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:mcc_frontend/detail.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'detail.dart';
 
-class ItemPage extends StatelessWidget {
-  final List<Map<String, dynamic>> items = [
-    {
-      'id': 1,
-      'image': 'cat-1.png',
-      'name': 'Serbian',
-      'description': 'A beautiful Serbian cat.',
-      'price': 29.99,
-    },
-    {
-      'id': 2,
-      'image': 'cat-2.png',
-      'name': 'Whiskas',
-      'description': 'A playful Whiskas cat.',
-      'price': 49.99,
-    },
-    {
-      'id': 3,
-      'image': 'cat-3.png',
-      'name': 'Unicolor',
-      'description': 'An elegant Unicolor cat.',
-      'price': 19.99,
-    },
-  ];
+class ItemPage extends StatefulWidget {
+  final String userId; // Add userId as a parameter
 
-  ItemPage({super.key});
+  const ItemPage(
+      {super.key, required this.userId}); // Add userId to constructor
+
+  @override
+  _ItemPageState createState() => _ItemPageState();
+}
+
+class _ItemPageState extends State<ItemPage> {
+  List<Map<String, dynamic>> items = [];
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchItems();
+  }
+
+  Future<void> _fetchItems() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://10.0.2.2:3000/items/get'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          items = data.cast<Map<String, dynamic>>();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to load items';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error occurred: $e';
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Items"),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (errorMessage != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Items"),
+        ),
+        body: Center(
+          child: Text(errorMessage!),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Items"),
@@ -51,7 +92,10 @@ class ItemPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailPage(item: item),
+                    builder: (context) => DetailPage(
+                      item: item,
+                      userId: widget.userId, // Pass userId to DetailPage
+                    ),
                   ),
                 );
               },
@@ -68,7 +112,7 @@ class ItemPage extends StatelessWidget {
                           top: Radius.circular(10.0),
                         ),
                         child: Image.asset(
-                          item['image'],
+                          item['image'], // Using Image.asset for local images
                           fit: BoxFit.cover,
                           width: double.infinity,
                         ),
@@ -103,37 +147,6 @@ class ItemPage extends StatelessWidget {
             );
           },
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Items',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex:
-            1, // The current index should correspond to the active tab
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacementNamed(context, '/home');
-              break;
-            case 1:
-              // Already on the Items page
-              break;
-            case 2:
-              Navigator.pushReplacementNamed(context, '/profile');
-              break;
-          }
-        },
       ),
     );
   }

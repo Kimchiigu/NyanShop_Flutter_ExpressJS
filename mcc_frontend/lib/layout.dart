@@ -1,53 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:mcc_frontend/detail.dart';
+import 'home.dart';
+import 'item.dart';
+import 'profile.dart';
 
-class MainLayout extends StatefulWidget {
-  final String title;
-  final Widget child;
-  final bool isDarkMode;
-  final ValueChanged<String?> onThemeChanged;
+class LayoutPage extends StatefulWidget {
+  final int userId;
 
-  const MainLayout({
-    super.key,
-    required this.title,
-    required this.child,
-    required this.isDarkMode,
-    required this.onThemeChanged,
-  });
+  const LayoutPage({super.key, required this.userId});
 
   @override
-  _MainLayoutState createState() => _MainLayoutState();
+  State<LayoutPage> createState() => _LayoutPageState();
 }
 
-class _MainLayoutState extends State<MainLayout> {
-  int _currentIndex = 0;
+class _LayoutPageState extends State<LayoutPage> {
+  int _selectedIndex = 0;
+  bool isDarkMode = false;
+
+  final List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages.add(HomePage(userId: widget.userId));
+    _pages.add(ItemPage(userId: '',));
+    _pages.add(ProfilePage(
+      userId: widget.userId,
+      username: '',
+    ));
+  }
 
   void _onItemTapped(int index) {
     setState(() {
-      _currentIndex = index;
+      _selectedIndex = index;
     });
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/items');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-    }
+  }
+
+  void _toggleTheme(String? value) {
+    setState(() {
+      isDarkMode = value == 'Dark';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData lightTheme = ThemeData(
+      brightness: Brightness.light,
+      primaryColor: Colors.blue,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      scaffoldBackgroundColor: Colors.white,
+      textTheme: const TextTheme(
+        headline5: TextStyle(color: Colors.black),
+        headline6: TextStyle(color: Colors.black),
+        bodyText2: TextStyle(color: Colors.black),
+      ),
+    );
+
+    final ThemeData darkTheme = ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: Colors.grey[700],
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.grey[850],
+        foregroundColor: Colors.white,
+      ),
+      scaffoldBackgroundColor: Colors.black,
+      textTheme: const TextTheme(
+        headline5: TextStyle(color: Colors.white),
+        headline6: TextStyle(color: Colors.white),
+        bodyText2: TextStyle(color: Colors.white70),
+      ),
+    );
+
     return MaterialApp(
-      theme: widget.isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      theme: isDarkMode ? darkTheme : lightTheme,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: const Text('NyanShop'),
           actions: [
             PopupMenuButton<String>(
-              onSelected: widget.onThemeChanged,
+              onSelected: _toggleTheme,
               itemBuilder: (BuildContext context) {
                 return [
                   const PopupMenuItem(
@@ -69,9 +103,9 @@ class _MainLayoutState extends State<MainLayout> {
             ),
           ],
         ),
-        body: widget.child,
+        body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
-          items: const [
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
@@ -85,7 +119,8 @@ class _MainLayoutState extends State<MainLayout> {
               label: 'Profile',
             ),
           ],
-          currentIndex: _currentIndex,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
           onTap: _onItemTapped,
         ),
       ),
