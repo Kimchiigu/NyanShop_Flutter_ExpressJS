@@ -7,154 +7,320 @@
 	},
 	"item": [
 		{
-			"name": "get-all-users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"get"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-user-by-id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get/1",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"get",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"Lily\",\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "users",
+			"item": [
+				{
+					"name": "get-all-users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"get"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/register",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "get-user-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/get/1",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"get",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/login",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update-user-by-id",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"Jason\",\r\n  \"email\": \"jason@gmail.com\",\r\n  \"password\": \"jason1234\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"Lily\",\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/register",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"register"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/update/2",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"update",
-						"2"
-					]
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"lily@gmail.com\",\r\n  \"password\": \"lily1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/login",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"Jason\",\r\n  \"email\": \"jason@gmail.com\",\r\n  \"password\": \"jason1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/update/2",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/delete/2",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "delete-user-by-id",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://{{BASE_API_URL}}:{{PORT}}/users/delete/2",
-					"protocol": "http",
-					"host": [
-						"{{BASE_API_URL}}"
-					],
-					"port": "{{PORT}}",
-					"path": [
-						"users",
-						"delete",
-						"2"
-					]
+			"name": "items",
+			"item": [
+				{
+					"name": "get-all-items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/items/get",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"items",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-item-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/items/get/1",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"items",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Unicolor\",\r\n    \"image\": \"assets/cat-3.png\",\r\n    \"price\": 68.19,\r\n    \"description\": \"A unique cat type. Has a hidden playful abilities to show\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/items/create",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"items",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-item-by-id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Unicolor\",\r\n    \"image\": \"assets/cat-3.png\",\r\n    \"price\": 78.99,\r\n    \"description\": \"A unique cat type. Has a hidden playful abilities to show\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/items/update/3",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"items",
+								"update",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-item-by-id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/items/delete/3",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"items",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "reviews",
+			"item": [
+				{
+					"name": "get-review-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{BASE_API_URL}}:{{PORT}}/reviews/get/1",
+							"protocol": "http",
+							"host": [
+								"{{BASE_API_URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"reviews",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
