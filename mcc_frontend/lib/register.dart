@@ -40,11 +40,22 @@ class _RegisterPageState extends State<RegisterPage> {
       emailError = null;
     }
 
+    // Password validation
     if (password.length < 6) {
-      passwordError = "Password must be at least 6 characters long";
+      setState(() {
+        passwordError = "Password must be at least 6 characters long";
+      });
+      hasError = true;
+    } else if (!RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(password)) {
+      // Check for at least one letter and one number
+      setState(() {
+        passwordError = "Password must contain both letters and numbers";
+      });
       hasError = true;
     } else {
-      passwordError = null;
+      setState(() {
+        passwordError = null;
+      });
     }
 
     if (hasError) {

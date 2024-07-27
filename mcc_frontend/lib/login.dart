@@ -35,9 +35,16 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
 
+    // Password validation
     if (password.length < 6) {
       setState(() {
         passwordError = "Password must be at least 6 characters long";
+      });
+      hasError = true;
+    } else if (!RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(password)) {
+      // Check for at least one letter and one number
+      setState(() {
+        passwordError = "Password must contain both letters and numbers";
       });
       hasError = true;
     } else {
