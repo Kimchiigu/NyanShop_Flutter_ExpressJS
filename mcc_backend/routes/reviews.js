@@ -7,7 +7,7 @@ router.get("/get/:itemId", async (req, res) => {
   const itemId = req.params.itemId;
   try {
     db.query(
-      "SELECT r.review, u.username FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.item_id = ?",
+      "SELECT r.review_text, u.username FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.item_id = ?",
       [itemId],
       (error, results) => {
         if (error)

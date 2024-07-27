@@ -79,7 +79,7 @@ class _DetailPageState extends State<DetailPage>
         },
         body: jsonEncode({
           'itemId': widget.item['id'],
-          'review': _reviewController.text,
+          'review_text': _reviewController.text,
           'userId': widget.userId, // Send userId
         }),
       );
@@ -174,7 +174,7 @@ class _DetailPageState extends State<DetailPage>
                           final review = _reviews[index];
                           return ListTile(
                             title: Text(review['username'] ?? 'Anonymous'),
-                            subtitle: Text(review['review'] ?? ''),
+                            subtitle: Text(review['review_text'] ?? ''),
                           );
                         },
                       ),
